@@ -5,4 +5,5 @@
 
 processlist_info *processlist_sensor(void);
 void free_listprocess(processlist_info *);
+int Uptime_sensor();
 #endif

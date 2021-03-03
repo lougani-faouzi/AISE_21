@@ -16,6 +16,8 @@
 int main(int argc, char **argv)
 {  
    processlist_info *p = NULL;
+   print_Uptime(Uptime_sensor());
+   
    p = processlist_sensor();
    print_processlist(p);
    free_listprocess(p);

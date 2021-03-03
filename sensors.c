@@ -46,4 +46,21 @@ void free_listprocess(processlist_info *p)
 }
 
 
+int Uptime_sensor(){
+   
+   //capteur permettant d'avoir Uptime 
+   int v;
+   double uptime = 0.0;
+   
+   FILE* f = fopen("/proc/uptime", "r");
+   if (f!=NULL) {
+      v=fscanf(f,"%64lf", &uptime);
+      if(v==0)
+      {
+      exit(EXIT_FAILURE);
+      }
+      fclose(f);
+   }
+   return (int)(uptime); 
+}
 
