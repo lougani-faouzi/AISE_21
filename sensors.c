@@ -5,15 +5,14 @@
 
 #include "sensors.h"
 
-#define PROC_FLAGS (PROC_FILLMEM | PROC_FILLCOM | PROC_FILLENV | PROC_FILLUSR | \
-                    PROC_FILLGRP | PROC_FILLSTAT | PROC_FILLSTATUS)
+#define PROC_FLAGS (PROC_FILLMEM | PROC_FILLCOM | PROC_FILLENV | PROC_FILLUSR | PROC_FILLGRP | PROC_FILLSTAT | PROC_FILLSTATUS)
+                    
                     
 processlist_info *processlist_sensor(void)
 {  
   unsigned int cpt=0,i=0;
+  processlist_info *p=NULL;
   
-  // allocation de la structure 
-  processlist_info *p = malloc(sizeof(processlist_info));
   // ouverture de la table selon le type qu'on veut lire 
   PROCTAB *temp = openproc(PROC_FLAGS);
   // lecture de tous les processus 
@@ -26,6 +25,7 @@ processlist_info *processlist_sensor(void)
    cpt++;  
   }
   // affectation des informations lues a la structure
+  p=malloc(sizeof(processlist_info));
   p->info = info;
   p->taille = cpt;
   
