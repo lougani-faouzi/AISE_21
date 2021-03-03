@@ -22,6 +22,14 @@ int main(int argc, char **argv)
    LoadAverage_sensor(&val1,&val2,&val3);
    print_Load_Average(val1,val2,val3); 
    
+   unsigned long long int cachedMem;
+   unsigned long long int Non_cache_buffer_memory;
+   unsigned long long int buffersMem;
+   unsigned long long int usedSwap;
+   
+   MemoryInfo_sensor(&cachedMem,&Non_cache_buffer_memory,&buffersMem,&usedSwap);
+   print_memory_result(cachedMem,Non_cache_buffer_memory,buffersMem,usedSwap);
+   
    p = processlist_sensor();
    print_processlist(p);
    free_listprocess(p);

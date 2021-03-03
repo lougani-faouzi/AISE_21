@@ -79,3 +79,84 @@ void LoadAverage_sensor(double *valAverage1 ,double *valAverage2,double *valAver
 
 }
 
+void MemoryInfo_sensor(unsigned long long int *cachedMem,unsigned long long int *Non_cache_buffer_memory,unsigned long long int *buffersMem ,unsigned long long int *usedSwap)
+{
+
+  
+   unsigned long long int totalMem=0;
+   unsigned long long int freeMem=0;
+   unsigned long long int sharedMem=0;
+   unsigned long long int totalSwap=0;
+   
+   unsigned long long int swapFree=0;
+   unsigned long long int shmem=0;
+   unsigned long long int sreclaimable=0;
+   unsigned long long int usedMem=0;
+
+  
+
+   FILE* file = fopen("/proc/meminfo", "r");
+  
+   if (file == NULL) {
+      printf("CAN T READ MEMINFO FILE ");
+   }
+   char buffer[128];
+   
+   while (fgets(buffer, 128, file)) {
+
+      if(strstr(buffer, "MemTotal:") != NULL)
+      {
+     	 sscanf(buffer + strlen("MemTotal:")," %32llu kB",&totalMem);
+      }
+      if(strstr(buffer, "MemFree:") != NULL)
+      {
+         sscanf(buffer + strlen("MemFree:")," %32llu kB",&freeMem);
+      }
+      if(strstr(buffer, "MemShared:") != NULL)
+      {
+         sscanf(buffer + strlen("MemShared:")," %32llu kB",&sharedMem);
+      }
+      if(strstr(buffer, "Buffers:") != NULL)
+      {
+         sscanf(buffer + strlen("Buffers:")," %32llu kB",buffersMem);
+      }
+      if(strstr(buffer, "Cached:") != NULL)
+      {
+         sscanf(buffer + strlen("Cached:")," %32llu kB",cachedMem);
+      }
+      if(strstr(buffer, "SwapTotal:") != NULL)
+      { 
+         sscanf(buffer + strlen("SwapTotal:")," %32llu kB",&totalSwap);
+      }
+      if(strstr(buffer, "SwapFree:") != NULL)
+      {
+         sscanf(buffer + strlen("SwapFree:")," %32llu kB",&swapFree);
+      }
+      if(strstr(buffer, "Shmem:") != NULL)
+      {
+         sscanf(buffer + strlen("Shmem:")," %32llu kB",&shmem);
+      }
+      if(strstr(buffer, "SReclaimable:") != NULL)
+      {
+        sscanf(buffer + strlen("SReclaimable:")," %32llu kB",&sreclaimable);
+      }
+      
+   }
+   
+   //cette formule est pour avoir les memoire en bleu /jaune/.. [|||| dans la comande htop
+   
+   usedMem = totalMem - freeMem; 
+   
+   cachedMem = cachedMem + sreclaimable - shmem; 
+   //cachedMem:couleur jaune à l'affichage de htop
+   *Non_cache_buffer_memory = usedMem-(*buffersMem+*cachedMem);
+   //Non_cache_buffer_memory:couleur verte à l'affichage de htop
+   //buffersMem:couleur bleu à l'affichage de htop
+   *usedSwap=totalSwap - swapFree;
+  
+   
+   
+   fclose(file);
+}
+
+
