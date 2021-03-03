@@ -43,3 +43,11 @@ void print_Load_Average(double val1,double val2,double val3){
    
 }
 
+void print_memory_result(unsigned long long int cachedMem,unsigned long long int Non_cache_buffer_memory,unsigned long long int buffersMem ,unsigned long long int usedSwap)
+{
+
+  printf("Mem[cached:%llu kb=%llu G||Non_cache_buffer_memory: %llu kb=%llu G||buffersMem: %llu kb=%llu G]\n",cachedMem,cachedMem/1000000,Non_cache_buffer_memory,Non_cache_buffer_memory/1000000,buffersMem,buffersMem/1000000);
+  printf("Swp[usedSwap:%llu kb=%llu G]\n",usedSwap,usedSwap/1000000);
+  
+}
+
