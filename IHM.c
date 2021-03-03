@@ -39,5 +39,7 @@ void print_Load_Average(double val1,double val2,double val3){
 
    printf("\t\t\t\t\t\t\t Load average: %.2lf %.2lf %.2lf\n",val1,val2,val3);
    printf("\n");
+   
+   
 }
 

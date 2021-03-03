@@ -20,6 +20,7 @@ int main(int argc, char **argv)
    
    double val1=0.0,val2=0.0,val3=0.0;
    LoadAverage_sensor(&val1,&val2,&val3);
+   print_Load_Average(val1,val2,val3); 
    
    p = processlist_sensor();
    print_processlist(p);
