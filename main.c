@@ -18,6 +18,9 @@ int main(int argc, char **argv)
    processlist_info *p = NULL;
    print_Uptime(Uptime_sensor());
    
+   double val1=0.0,val2=0.0,val3=0.0;
+   LoadAverage_sensor(&val1,&val2,&val3);
+   
    p = processlist_sensor();
    print_processlist(p);
    free_listprocess(p);

@@ -64,3 +64,18 @@ int Uptime_sensor(){
    return (int)(uptime); 
 }
 
+void LoadAverage_sensor(double *valAverage1 ,double *valAverage2,double *valAverage3){
+   int n;
+   
+   FILE *f = fopen("/proc/loadavg", "r");
+   if (f!=NULL) {
+      n=fscanf(f,"%32lf %32lf %32lf",valAverage1,valAverage2,valAverage3);
+      if(n==0)
+      {
+      exit(EXIT_FAILURE);
+      }
+      fclose(f);
+   }
+
+}
+

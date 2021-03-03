@@ -6,4 +6,5 @@
 processlist_info *processlist_sensor(void);
 void free_listprocess(processlist_info *);
 int Uptime_sensor();
+void LoadAverage_sensor(double *,double *,double *);
 #endif
