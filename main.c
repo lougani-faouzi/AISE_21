@@ -4,34 +4,79 @@
 #include <sys/stat.h> 
 #include <fcntl.h>   
 
-
-#include "processlist.h"
-#include "sensors.h"
 #include "IHM.h"
+#include "server.h"
+#include "client.h"
 
 #define PROC_FLAGS (PROC_FILLMEM | PROC_FILLCOM | PROC_FILLENV | PROC_FILLUSR | PROC_FILLGRP | PROC_FILLSTAT | PROC_FILLSTATUS)
 
 
+void opt_client(int argc, char **argv)
+{
+  int opt;
+  int ipv=0;
+  
+  
+  while ((opt = getopt(argc, argv, "46vp")) != -1)
+    {
+    if (opt=='4'||'6'||'v')
+        {
+		ipv = opt - '0';
+		printf("ipv configuration ok client \n");
+        
+        }
+    if (opt=='p')
+        {
+		client(ipv);
+                break;
+        }
+     }
+}
+
+void opt_server(int argc, char **argv)
+{
+  int opt;
+  int ipv = 0;
+  
+  while ((opt = getopt(argc, argv, "46v")) != -1)
+    {
+            if (opt=='4'||'6'||'v')
+            {
+		ipv = opt - '0';
+		printf("ipv configuration ok serveur \n");
+        
+            }
+          server(ipv);
+          break;
+        
+    }
+}
+
 int main(int argc, char **argv)
-{  
-   processlist_info *p = NULL;
-   print_Uptime(Uptime_sensor());
-   
-   double val1=0.0,val2=0.0,val3=0.0;
-   LoadAverage_sensor(&val1,&val2,&val3);
-   print_Load_Average(val1,val2,val3); 
-   
-   unsigned long long int cachedMem;
-   unsigned long long int Non_cache_buffer_memory;
-   unsigned long long int buffersMem;
-   unsigned long long int usedSwap;
-   
-   MemoryInfo_sensor(&cachedMem,&Non_cache_buffer_memory,&buffersMem,&usedSwap);
-   print_memory_result(cachedMem,Non_cache_buffer_memory,buffersMem,usedSwap);
-   
-   p = processlist_sensor();
-   print_processlist(p);
-   free_listprocess(p);
-   
-   
-};
+{
+  int opt;
+
+  while ((opt = getopt(argc, argv, "sch")) != -1)
+    {
+     if(opt=='h')
+      {
+        print_help(argc, argv);
+        break;
+      }
+     if(opt=='c')
+      {
+        opt_client(argc, argv);
+        break;
+      }
+      if(opt=='s')
+      {
+        opt_server(argc, argv);
+        break;
+      }
+    }
+
+
+ 
+  return 0;
+}
+
