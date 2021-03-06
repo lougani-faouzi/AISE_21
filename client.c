@@ -5,13 +5,14 @@
 #include <string.h> 
 #include <netdb.h>
 #include <sys/socket.h>
+#include "rdtsc.h"
 
 #include "client.h"
 #include "processlist.h"
 #include "sensors.h"
 #include "IHM.h"
-
 #include "server.h"
+
 
 
 #define PROC_FLAGS (PROC_FILLMEM | PROC_FILLCOM | PROC_FILLENV | PROC_FILLUSR | PROC_FILLGRP | PROC_FILLSTAT | PROC_FILLSTATUS)
@@ -77,24 +78,38 @@ void client(int adress_ip)
 
 void charger_client_simple()
 {
-	processlist_info *p = NULL;
+	
+	
+	//double before0=rdtsc();
 	print_Uptime(Uptime_sensor());
-   
+        //double after0=rdtsc();
+        //printf("\n%lf cycles to uptime sensor \n",after0-before0);
+        
+        //double before1=rdtsc();
 	double val1=0.0,val2=0.0,val3=0.0;
+	
 	LoadAverage_sensor(&val1,&val2,&val3);
 	print_Load_Average(val1,val2,val3); 
-   
+        //double after1=rdtsc();
+        //printf("\n%lf cycles to load_average sensor \n",after1-before1);
+        
+        //double before2=rdtsc();
 	unsigned long long int cachedMem;
 	unsigned long long int Non_cache_buffer_memory;
 	unsigned long long int buffersMem;
 	unsigned long long int usedSwap;
-   
    	MemoryInfo_sensor(&cachedMem,&Non_cache_buffer_memory,&buffersMem,&usedSwap);
    	print_memory_result(cachedMem,Non_cache_buffer_memory,buffersMem,usedSwap);
-        
+        //double after2=rdtsc();
+        //printf("\n%lf cycles to memoryinfo sensor \n",after2-before2);
+       
+       // double before3=rdtsc();
+	processlist_info *p = NULL; 
    	p = processlist_sensor();
    	print_processlist(p);
    	free_listprocess(p);
+   	//double after3=rdtsc();
+        //printf("\n%lf cycles to memoryinfo sensor \n",after3-before3);
 }
 
 

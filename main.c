@@ -66,18 +66,15 @@ int main(int argc, char **argv)
       }
      if(opt=='c')
       { 
-        //double before=rdtsc();
+      
         opt_client(argc, argv);
-        //double after=rdtsc();
-        //printf("%lf cycles to server implement\n",after-before);
+
         break;
       }
       if(opt=='s')
       
-      { //double before1=rdtsc();
+      { 
         opt_server(argc, argv);
-        //double after1=rdtsc();
-        //printf("%lf cycles to server implement\n",after1-before1);
         break;
       }
       
