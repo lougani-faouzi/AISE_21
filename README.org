@@ -1,0 +1,46 @@
+
+AISE_21_PROJECT
+
+System monitor implementation of htop/top command
+
+The purpose is to implement a monitoring tool whose functioning is close to top or htop allowing to retrieve the performance metrics of several machines.
+
+**Must have**
+  - gcc
+  - procps
+  - make
+ 
+**How to Install libprocps-dev in Ubuntu**
+#+BEGIN_SRC bash
+sudo apt update
+sudo apt install libprocps-dev
+#+END_SRC
+
+**Clone project**
+
+#+BEGIN_SRC bash
+git clone https://github.com/lougani-faouzi/AISE_21.git
+#+END_SRC
+
+**Start use**
+  - Go to the contents folder and tap:
+#+BEGIN_SRC bash
+   make- ./aisetop -h
+#+END_SRC
+
+**help interface**
+#+BEGIN_SRC txt
+   tap -h for help 
+   tap -c ton configure client and choose commands 
+      tap -4 for ipv4 adress
+      tap -6 for ipv6 adress
+      tap -p to get console print informations ;
+      tap -v for ipv6 and ipv4 auto
+   tap -s ton configure server and choose commands 
+      tap -4 for ipv4 adress
+      tap -6 for ipv6 adress
+      tap -p to get console print informations ;
+      tap -v for ipv6 and ipv4 auto
+#+END_SRC
+
+**will be available from 12/03/2021**
