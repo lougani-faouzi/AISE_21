@@ -5,113 +5,81 @@
 #include <string.h> 
 #include <netdb.h>
 #include <sys/socket.h>
-#include "rdtsc.h"
-
-#include "client.h"
-#include "processlist.h"
-#include "sensors.h"
-#include "IHM.h"
-#include "server.h"
 
 
+void client(int adress_ip){
 
-#define PROC_FLAGS (PROC_FILLMEM | PROC_FILLCOM | PROC_FILLENV | PROC_FILLUSR | PROC_FILLGRP | PROC_FILLSTAT | PROC_FILLSTATUS)
-
-
-void client(int adress_ip)
-{
-
-	struct addrinfo *informations_0;
-	struct addrinfo charge;
-	int temp;
+int Client=socket(AF_INET,SOCK_STREAM, 0);
 	
-	
-	int connexion=0;
-	int val_soc=-1;
-	struct addrinfo *socket_ai;
-	
-	memset(&charge,0,sizeof(charge));
-	
-	
-	switch(adress_ip)
+	struct sockaddr_in addrClient;
+
+       //atribution type d adress , port  pareil que le seveur 
+       switch(adress_ip)
 	{
 	  //renvoyer une adresse ipv6
 	  case 6:
-	  charge.ai_family=AF_INET6;
+	  addrClient.sin_family =AF_INET6;
+	  break;
 	  //revoyer une adresse ipv4
 	  case 4:
-	  charge.ai_family=AF_INET;
-	  
+	  addrClient.sin_family =AF_INET;
+	  break;
 	  //renvoyer les adresses de socket de n'importe quelle famille d'adresses(ipv4 ou ipv6)
 	  default:
-	  charge.ai_family=AF_UNSPEC;
+	  addrClient.sin_family =AF_UNSPEC;
 	};
+       addrClient.sin_port = htons(30000);// je peux le remplacer avec 8080
 	
-	charge.ai_flags=AI_PASSIVE;
-	charge.ai_socktype=SOCK_STREAM;
-	
-	// faire appel a getaddrinfo pour avoir une ou plusieurs structures addrinfo qui va donner l'adresse pouvant 
-	// etre indiquer en cas d'un connect 
-	
-	temp=getaddrinfo(NULL,"8080",&charge,&informations_0);
-	if(temp!= 0) 
-	{
-		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(temp));
-        	exit(EXIT_FAILURE);
-	}
-	//se connecter a la socket et ecoute 
-	for(socket_ai=informations_0;socket_ai!=NULL;socket_ai=socket_ai->ai_next)
-	{
-	   val_soc=socket(socket_ai->ai_family,socket_ai->ai_socktype,socket_ai->ai_protocol);
-           connexion=1;
-	}
+	//connexion
+	connect(Client ,(const struct sockaddr *)&addrClient,sizeof(addrClient));
+        printf(" on est connecté \n ");
        
-        if(connexion==0)
-        {
-           fprintf(stderr, "Impossible de se connecter a 0.0.0.0 du port =8080 \n");
-           exit(EXIT_FAILURE);
-        }
-        charger_client_simple();
-         close(val_soc);
-        
+        char msgrecu[100] ;
+	char msgenvoi[100]="je suis le client voila mes infos ";
+ 
+	recv(Client,msgrecu,100,0);
+	send(Client ,msgenvoi ,100,0);
+	close(Client);  
+
 }
 
-void charger_client_simple()
+
+void opt_client(int argc, char **argv)
 {
-	
-	
-	//double before0=rdtsc();
-	print_Uptime(Uptime_sensor());
-        //double after0=rdtsc();
-        //printf("\n%lf cycles to uptime sensor \n",after0-before0);
-        
-        //double before1=rdtsc();
-	double val1=0.0,val2=0.0,val3=0.0;
-	
-	LoadAverage_sensor(&val1,&val2,&val3);
-	print_Load_Average(val1,val2,val3); 
-        //double after1=rdtsc();
-        //printf("\n%lf cycles to load_average sensor \n",after1-before1);
-        
-        //double before2=rdtsc();
-	unsigned long long int cachedMem;
-	unsigned long long int Non_cache_buffer_memory;
-	unsigned long long int buffersMem;
-	unsigned long long int usedSwap;
-   	MemoryInfo_sensor(&cachedMem,&Non_cache_buffer_memory,&buffersMem,&usedSwap);
-   	print_memory_result(cachedMem,Non_cache_buffer_memory,buffersMem,usedSwap);
-        //double after2=rdtsc();
-        //printf("\n%lf cycles to memoryinfo sensor \n",after2-before2);
-       
-       // double before3=rdtsc();
-	processlist_info *p = NULL; 
-   	p = processlist_sensor();
-   	print_processlist(p);
-   	free_listprocess(p);
-   	//double after3=rdtsc();
-        //printf("\n%lf cycles to memoryinfo sensor \n",after3-before3);
+  int opt;
+  int ipv=0;
+  
+  
+  while ((opt = getopt(argc, argv, "46v")) != -1)
+    {
+    if (opt=='4'||'6'||'v')
+        {
+		ipv = opt - '0';
+		printf("ipv configuration ok client \n");
+		                
+        }
+     client(ipv);
+     break;
+    }
 }
 
+
+int main(int argc, char **argv)
+{
+  int opt;
+
+  while ((opt = getopt(argc, argv, "c")) != -1)
+    {
+      if(opt=='c')
+      { 
+        opt_client(argc, argv);
+        break;
+      }
+      
+    }
+
+  return 0;
+}
 
 
 

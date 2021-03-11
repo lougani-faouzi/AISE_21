@@ -2,6 +2,6 @@
 #define _client_h_
 
 void client(int);
-void charger_client_simple();
+void opt_client(int argc, char **argv);
 
 #endif
