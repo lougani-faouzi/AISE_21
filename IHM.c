@@ -53,14 +53,12 @@ void print_memory_result(unsigned long long int cachedMem,unsigned long long int
 
 void print_help(int argc, char **argv)
 { 
-  
-  printf("\t\t\t\t\t tapper -h pour afficher l'aide\n");
-  printf("\t\t\t\t\t tapper -c pour configurer comme client puis au choix les commandes \n");
+  printf("\t\t\t\t\t tapper -s pour configurer comme serveur puis au choix les commandes\n");
+  printf("\t\t\t\t\t   tapper -h pour afficher l'aide\n");
   printf("\t\t\t\t\t\t tapper -4 pour les adresse ipv4\n");
   printf("\t\t\t\t\t\t tapper -6 pour les adresse ipv6\n");
-  printf("\t\t\t\t\t\t tapper -p pour afficher en sortie standard les infos\n");
   printf("\t\t\t\t\t\t tapper -v pour les adresse ipv6 et ipv4 automatique \n");
-  printf("\t\t\t\t\t tapper -s pour configurer comme serveur puis au choix les commandes\n");
+  printf("\t\t\t\t\t tapper -c pour configurer comme client puis au choix les commandes \n");
   printf("\t\t\t\t\t\t tapper -4 pour les adresse ipv4\n");
   printf("\t\t\t\t\t\t tapper -6 pour les adresse ipv6\n");
   printf("\t\t\t\t\t\t tapper -v pour les adresse ipv6 et ipv4 automatique \n");
