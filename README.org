@@ -23,23 +23,40 @@ git clone https://github.com/lougani-faouzi/AISE_21.git
 #+END_SRC
 
 **Start use**
-  - Go to the contents folder and tap:
+  - To get server_mode go to the contents folder open terminal and tap :
 #+BEGIN_SRC bash
-   make- ./aisetop -h
+   make
 #+END_SRC
+#+BEGIN_SRC bash
+   ./aisetop -h
+#+END_SRC
+
+  - To get client_mode go to the contents folder ,open terminal and tap :
+#+BEGIN_SRC bash
+gcc -o aisetop1  client.c 
+#+END_SRC
+
+if we would run with ipv4 tap:
+
+#+BEGIN_SRC bash
+./aisetop1 -c4 
+#+END_SRC   
+
+
 
 **help interface**
 #+BEGIN_SRC txt
+   if we are on server_mode
    tap -h for help 
-   tap -c ton configure client and choose commands 
+   tap -s ton configure client and choose commands 
       tap -4 for ipv4 adress
       tap -6 for ipv6 adress
-      tap -p to get console print informations ;
       tap -v for ipv6 and ipv4 auto
-   tap -s ton configure server and choose commands 
+      
+   if we are in client_mode
+   tap -c ton configure server and choose commands 
       tap -4 for ipv4 adress
       tap -6 for ipv6 adress
-      tap -p to get console print informations ;
       tap -v for ipv6 and ipv4 auto
 #+END_SRC
 
